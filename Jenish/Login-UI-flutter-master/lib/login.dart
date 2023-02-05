@@ -101,7 +101,7 @@ class _MyLoginState extends State<MyLogin> {
                                   style: TextStyle(
                                       decoration: TextDecoration.underline,
                                       color: Color(0xff4c505b),
-                                      fontSize: 18),
+                                      fontSize: 22),
                                 ),
                                 style: ButtonStyle(),
                               ),
