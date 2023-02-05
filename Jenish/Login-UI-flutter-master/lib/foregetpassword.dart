@@ -11,7 +11,7 @@ class forgetpass extends StatefulWidget {
 
 class _forgetpassState extends State<forgetpass> {
   get style => null;
-
+  bool _isShow = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,6 +76,11 @@ class _forgetpassState extends State<forgetpass> {
                           width: 200, //width of button
                           child: ElevatedButton(
                             onPressed: () {
+                              setState(
+                                () {
+                                  _isShow = !_isShow;
+                                },
+                              );
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(
                                 content: Text('Email has been Send!'),
@@ -89,36 +94,43 @@ class _forgetpassState extends State<forgetpass> {
                       SizedBox(
                         height: 30,
                       ),
-                      TextField(
-                        keyboardType: TextInputType.number,
-                        style: TextStyle(color: Colors.black),
-                        decoration: InputDecoration(
-                            fillColor: Colors.grey.shade100,
-                            filled: true,
-                            hintText: "OTP",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            )),
+                      Visibility(
+                        visible: _isShow,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          style: TextStyle(color: Colors.black),
+                          decoration: InputDecoration(
+                              fillColor: Colors.grey.shade100,
+                              filled: true,
+                              hintText: "OTP",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              )),
+                        ),
                       ),
                       SizedBox(
                         height: 30,
                       ),
-                      SizedBox(
-                          height: 50, //height of button
-                          width: 200, //width of button
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const confirmpass()),
-                              );
-                            },
-                            child: const Text(
-                              'Submit',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          )),
+                      Visibility(
+                        visible: _isShow,
+                        child: SizedBox(
+                            height: 50, //height of button
+                            width: 200, //width of button
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const confirmpass()),
+                                );
+                              },
+                              child: const Text(
+                                'Submit',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            )),
+                      )
                     ],
                   ),
                 )
