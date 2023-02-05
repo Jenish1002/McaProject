@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loginuicolors/foregetpassword.dart';
 
 class MyLogin extends StatefulWidget {
   const MyLogin({Key? key}) : super(key: key);
@@ -38,6 +39,16 @@ class _MyLoginState extends State<MyLogin> {
                       margin: EdgeInsets.only(left: 35, right: 35),
                       child: Column(
                         children: [
+                          Text(
+                            'Sign In',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 60,
+                          ),
                           TextField(
                             style: TextStyle(color: Colors.black),
                             decoration: InputDecoration(
@@ -68,11 +79,6 @@ class _MyLoginState extends State<MyLogin> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                'Sign in',
-                                style: TextStyle(
-                                    fontSize: 27, fontWeight: FontWeight.w700),
-                              ),
                               CircleAvatar(
                                 radius: 30,
                                 backgroundColor: Color(0xff4c505b),
@@ -106,7 +112,14 @@ class _MyLoginState extends State<MyLogin> {
                                 style: ButtonStyle(),
                               ),
                               TextButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const forgetpass()),
+                                    );
+                                  },
                                   child: Text(
                                     'Forgot Password',
                                     style: TextStyle(
