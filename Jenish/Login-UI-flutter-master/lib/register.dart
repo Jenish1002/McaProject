@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:loginuicolors/models/RegisterModel.dart';
 
 class MyRegister extends StatefulWidget {
   const MyRegister({Key? key}) : super(key: key);
@@ -7,7 +9,41 @@ class MyRegister extends StatefulWidget {
   _MyRegisterState createState() => _MyRegisterState();
 }
 
+Future<RegisterModel?> submitData(String name, String email, String gender,
+    String phone, String username, String password) async {
+  try {
+    final response = await http
+        .post(Uri.parse('http://192.168.1.10:8000/user/Register'), body: {
+      "name": name,
+      "email": email,
+      "gender": gender,
+      "phone": phone,
+      "username": username,
+      "password": password
+    });
+
+    var data = response.body;
+    print(data);
+
+    if (response.statusCode == 200) {
+      String responseString = response.body;
+      registerModelFromJson(responseString);
+    } else
+      return null;
+  } catch (error) {
+    print(error);
+  }
+}
+
 class _MyRegisterState extends State<MyRegister> {
+  RegisterModel? _registerModel;
+  TextEditingController nameCon = TextEditingController();
+  TextEditingController emailCon = TextEditingController();
+  TextEditingController genderCon = TextEditingController();
+  TextEditingController phoneCon = TextEditingController();
+  TextEditingController usernameCon = TextEditingController();
+  TextEditingController passwordCon = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,6 +94,7 @@ class _MyRegisterState extends State<MyRegister> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 )),
+                            controller: nameCon,
                           ),
                           SizedBox(
                             height: 30,
@@ -82,6 +119,7 @@ class _MyRegisterState extends State<MyRegister> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 )),
+                            controller: emailCon,
                           ),
                           SizedBox(
                             height: 30,
@@ -106,6 +144,7 @@ class _MyRegisterState extends State<MyRegister> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 )),
+                            controller: genderCon,
                           ),
                           SizedBox(
                             height: 30,
@@ -131,6 +170,7 @@ class _MyRegisterState extends State<MyRegister> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 )),
+                            controller: phoneCon,
                           ),
                           SizedBox(
                             height: 30,
@@ -155,6 +195,7 @@ class _MyRegisterState extends State<MyRegister> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 )),
+                            controller: usernameCon,
                           ),
                           SizedBox(
                             height: 30,
@@ -180,6 +221,7 @@ class _MyRegisterState extends State<MyRegister> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 )),
+                            controller: passwordCon,
                           ),
                           SizedBox(
                             height: 40,
@@ -192,8 +234,20 @@ class _MyRegisterState extends State<MyRegister> {
                                 backgroundColor: Color(0xff4c505b),
                                 child: IconButton(
                                     color: Colors.white,
-                                    onPressed: () {
+                                    onPressed: () async {
+                                      String name = nameCon.text;
+                                      String email = emailCon.text;
+                                      String gender = genderCon.text;
+                                      String phone = phoneCon.text;
+                                      String username = usernameCon.text;
+                                      String password = passwordCon.text;
+
+                                      RegisterModel? data = await submitData(name,
+                                          email, gender, phone, username, password);
                                       Navigator.pushNamed(context, 'login');
+                                      setState(() {
+                                        _registerModel = data;
+                                      });
                                     },
                                     icon: Icon(
                                       Icons.arrow_forward,
@@ -201,28 +255,6 @@ class _MyRegisterState extends State<MyRegister> {
                               )
                             ],
                           ),
-                          SizedBox(
-                            height: 40,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, 'login');
-                                },
-                                child: Text(
-                                  'Sign In',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: Colors.white,
-                                      fontSize: 30),
-                                ),
-                                style: ButtonStyle(),
-                              ),
-                            ],
-                          )
                         ],
                       ),
                     )

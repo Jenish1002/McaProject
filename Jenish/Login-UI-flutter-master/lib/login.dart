@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:loginuicolors/foregetpassword.dart';
+import 'package:loginuicolors/models/LoginModel.dart';
+import 'package:http/http.dart' as http;
+import 'package:loginuicolors/splash.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyLogin extends StatefulWidget {
   const MyLogin({Key? key}) : super(key: key);
@@ -8,7 +12,32 @@ class MyLogin extends StatefulWidget {
   _MyLoginState createState() => _MyLoginState();
 }
 
+Future<LoginModel?> submitData(String email, String password) async {
+  try {
+    final response = await http
+        .post(Uri.parse('http://192.168.1.10:8000/user/Login'), body: {
+      "email": email,
+      "password": password
+    });
+
+    var data = response.body;
+    print(data);
+
+    if (response.statusCode == 200) {
+      String responseString = response.body;
+      loginModelFromJson(responseString);
+    } else
+      return null;
+  } catch (error) {
+    print(error);
+  }
+}
+
 class _MyLoginState extends State<MyLogin> {
+
+  LoginModel? _loginModel;
+  TextEditingController emailCon = TextEditingController();
+  TextEditingController passCon = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,6 +87,7 @@ class _MyLoginState extends State<MyLogin> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 )),
+                            controller: emailCon,
                           ),
                           SizedBox(
                             height: 30,
@@ -72,6 +102,7 @@ class _MyLoginState extends State<MyLogin> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 )),
+                            controller: passCon,
                           ),
                           SizedBox(
                             height: 40,
@@ -84,7 +115,20 @@ class _MyLoginState extends State<MyLogin> {
                                 backgroundColor: Color(0xff4c505b),
                                 child: IconButton(
                                     color: Colors.white,
-                                    onPressed: () {},
+                                    onPressed: () async {
+
+                                      var sharedPref = await SharedPreferences.getInstance();
+                                      sharedPref.setBool(splash_screenState.KEYLOGIN, true);
+
+                                      String email = emailCon.text;
+                                      String password = passCon.text;
+
+                                      LoginModel? data = await submitData(email, password);
+                                      Navigator.pushNamed(context, 'home');
+                                      setState(() {
+                                        _loginModel = data;
+                                      });
+                                    },
                                     icon: Icon(
                                       Icons.arrow_forward,
                                     )),
@@ -92,7 +136,7 @@ class _MyLoginState extends State<MyLogin> {
                             ],
                           ),
                           SizedBox(
-                            height: 40,
+                            height: 20,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
