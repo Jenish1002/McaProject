@@ -14,11 +14,9 @@ class MyLogin extends StatefulWidget {
 
 Future<LoginModel?> submitData(String email, String password) async {
   try {
-    final response = await http
-        .post(Uri.parse('http://192.168.1.10:8000/user/Login'), body: {
-      "email": email,
-      "password": password
-    });
+    final response = await http.post(
+        Uri.parse('http://192.168.1.10:8000/user/Login'),
+        body: {"email": email, "password": password});
 
     var data = response.body;
     print(data);
@@ -34,7 +32,6 @@ Future<LoginModel?> submitData(String email, String password) async {
 }
 
 class _MyLoginState extends State<MyLogin> {
-
   LoginModel? _loginModel;
   TextEditingController emailCon = TextEditingController();
   TextEditingController passCon = TextEditingController();
@@ -116,14 +113,16 @@ class _MyLoginState extends State<MyLogin> {
                                 child: IconButton(
                                     color: Colors.white,
                                     onPressed: () async {
-
-                                      var sharedPref = await SharedPreferences.getInstance();
-                                      sharedPref.setBool(splash_screenState.KEYLOGIN, true);
+                                      var sharedPref =
+                                          await SharedPreferences.getInstance();
+                                      sharedPref.setBool(
+                                          splash_screenState.KEYLOGIN, true);
 
                                       String email = emailCon.text;
                                       String password = passCon.text;
 
-                                      LoginModel? data = await submitData(email, password);
+                                      LoginModel? data =
+                                          await submitData(email, password);
                                       Navigator.pushNamed(context, 'home');
                                       setState(() {
                                         _loginModel = data;
@@ -143,7 +142,7 @@ class _MyLoginState extends State<MyLogin> {
                             children: [
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, 'register');
+                                  Navigator.pushNamed(context, 'home');
                                 },
                                 child: Text(
                                   'Sign Up',
