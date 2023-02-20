@@ -11,7 +11,7 @@ void main() {
     routes: {
       'register': (context) => MyRegister(),
       'login': (context) => MyLogin(),
-      'home':(context) => home_page(),
+      'home': (context) => home_page(),
     },
   ));
 }

@@ -12,7 +12,6 @@ class splash_screen extends StatefulWidget {
 }
 
 class splash_screenState extends State<splash_screen> {
-
   static const String KEYLOGIN = "login";
 
   @override
@@ -22,37 +21,44 @@ class splash_screenState extends State<splash_screen> {
 
     whereToGo();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         color: Colors.blue,
         child: Center(
-          child: Icon(Icons.account_circle, color: Colors.white,size: 90,),
+          child: Icon(
+            Icons.account_circle,
+            color: Colors.white,
+            size: 90,
+          ),
         ),
       ),
     );
   }
 
   void whereToGo() async {
-
     var sharedPref = await SharedPreferences.getInstance();
 
     var isLogedIn = sharedPref.getBool(KEYLOGIN);
 
-    Timer(Duration(seconds: 3),(){
-
-      if(isLogedIn != null){
-        if(isLogedIn){
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => home_page()));
-        }else{
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyLogin()));
+    Timer(
+      Duration(seconds: 3),
+      () {
+        if (isLogedIn != null) {
+          if (isLogedIn) {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => home_page()));
+          } else {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => MyLogin()));
+          }
+        } else {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => MyLogin()));
         }
-      }else{
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyLogin()));
-      }
-    },);
+      },
+    );
   }
 }
-
-
