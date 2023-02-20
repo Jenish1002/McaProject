@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:loginuicolors/foregetpassword.dart';
 import 'package:loginuicolors/models/LoginModel.dart';
@@ -20,8 +22,12 @@ Future<LoginModel?> submitData(String email, String password) async {
       "password": password
     });
 
-    var data = response.body;
+    var data = json.decode(response.body) as Map;
+
     print(data);
+
+    var sharedPref = await SharedPreferences.getInstance();
+    sharedPref.setString("id", data['id']);
 
     if (response.statusCode == 200) {
       String responseString = response.body;

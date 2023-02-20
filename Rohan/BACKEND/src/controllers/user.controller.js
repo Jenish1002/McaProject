@@ -207,7 +207,7 @@ exports.matchOTP = async (req, res) => {
 
     const data = await otpData.findOne({ user_id });
 
-    if (Object.values(data.otp_data[0])[0] === u_otp) {
+    if (Object.values(data.otp_data[0])[0] === +u_otp) {
       return res
         .status(200)
         .json(new APIResponse("OTP Match Successfully.", false, 200));
